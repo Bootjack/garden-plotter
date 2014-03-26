@@ -1,0 +1,19 @@
+.selection-list
+    background: whitesmoke
+    color: black
+    margin: 0 0 1em 0
+    width: 20em
+    ul
+        margin: 0
+        padding: 0
+    li
+        background: linear-gradient(top, white, whitesmoke)
+        border-top: 1px solid gray
+        color: gray
+        list-style-type: none
+        margin: 0
+        padding: 0.25em 0.5em
+        &.is-selected
+            background: linear-gradient(top, lighten(text-bold, 40%), darken(text-bold, 30%))
+            box-shadow: inset -5px -5px 8px text-bold
+            color: black

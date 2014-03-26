@@ -1,0 +1,30 @@
+doctype html
+html(ng-app="gardenPlotter")
+    head
+        title Garden Plotter
+        link(rel="stylesheet", type="text/css", href="/styles/main.css")
+    body(ng-controller="MainController")
+        header(ng-controller="BuildController")
+            h1 {{info.name}}
+            .version version {{info.version}}
+
+        form.creation-form(ng-submit="addVegetable(vegetable)", name="newVegetable", novalidate)
+            label Add Veg
+                input(ng-model="vegetable.name")
+        
+        .selection-list(ng-controller="VegetableListController")
+            label Search
+                input(ng-model="search", placeholder="Tomato")
+            label Sort
+                select(ng-model="sort")
+                    option(value="name") Alphabetical
+                    optgroup(label="Timeline")
+                        option(value="timeline.added") Added
+            ul
+                li(ng-repeat="veg in vegetables | filter:search | orderBy:sort", 
+                    ng-click="selectVegetable(veg)", 
+                    ng-class="{'is-selected': veg.isSelected && !veg.isPlaceholder}"
+                ) {{veg.name}}
+    
+        script(type="text/javascript", src="/scripts/angular.js")
+        script(type="text/javascript", src="/scripts/app.js")
