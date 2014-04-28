@@ -6,8 +6,8 @@ describe('Garden Plotter', function () {
     beforeEach(angular.mock.module('gardenPlotter'));
     beforeEach(angular.mock.inject(function ($rootScope, $controller) {
         scope = $rootScope.$new();
-        $controller('BuildController', {$scope: scope});
-        $controller('MainController', {$scope: scope});
+        $controller('buildController', {$scope: scope});
+        $controller('vegetableController', {$scope: scope});
     }));
 
     it('should be called Garden Plotter', function () {

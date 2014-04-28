@@ -1,11 +1,47 @@
 [
-    {"name": "Tomato"},
-    {"name": "Pumpkin"},
-    {"name": "Avacado"},
-    {"name": "Squash"},
-    {"name": "Broccoli"},
-    {"name": "Carrots"},
-    {"name": "Beets"},
-    {"name": "Kale"},
-    {"name": "Zucchini"}    
+    {"name": "Tomato", "lifecycle": {
+        "daysToGerminate": 6,
+        "daysToHarvest": 42,
+        "perennial": false
+    }},
+    {"name": "Pumpkin", "lifecycle": {
+        "daysToGerminate": 12,
+        "daysToHarvest": 84,
+        "perennial": false
+    }},
+    {"name": "Avacado", "lifecycle": {
+        "daysToGerminate": 6,
+        "daysToHarvest": 62,
+        "perennial": false
+    }},
+    {"name": "Squash", "lifecycle": {
+        "daysToGerminate": 10,
+        "daysToHarvest": 65,
+        "perennial": false
+    }},
+    {"name": "Broccoli", "lifecycle": {
+        "daysToGerminate": 7,
+        "daysToHarvest": 51,
+        "perennial": false
+    }},
+    {"name": "Carrots", "lifecycle": {
+        "daysToGerminate": 8,
+        "daysToHarvest": 55,
+        "perennial": false
+    }},
+    {"name": "Beets", "lifecycle": {
+        "daysToGerminate": 8,
+        "daysToHarvest": 56,
+        "perennial": false
+    }},
+    {"name": "Kale", "lifecycle": {
+        "daysToGerminate": 5,
+        "daysToHarvest": 36,
+        "perennial": false
+    }},
+    {"name": "Zucchini", "lifecycle": {
+        "daysToGerminate": 9,
+        "daysToHarvest": 48,
+        "perennial": false
+    }}    
 ]

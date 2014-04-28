@@ -12,8 +12,15 @@
         color: gray
         list-style-type: none
         margin: 0
-        padding: 0.25em 0.5em
+        padding: 0
         &.is-selected
             background: linear-gradient(top, lighten(text-bold, 40%), darken(text-bold, 30%))
             box-shadow: inset -5px -5px 8px text-bold
             color: black
+        a, a:visited
+            color: inherit
+            display: block
+            margin: 0
+            padding: 0.25em 0.5em
+            text-decoration: none
+            

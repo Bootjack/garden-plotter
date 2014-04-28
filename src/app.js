@@ -1,31 +1,23 @@
-var app = angular.module('gardenPlotter', []);
+var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'vegetableControllers', 'gardenPlotterFilters']);
 
-app.controller('BuildController', ['$scope', function ($scope) {
+gardenPlotterApp.config(['$routeProvider', function ($routeProvider) {
+    $routeProvider
+        .when('/veg', {
+            templateUrl: '/vegetable-list.html',
+            controller: 'vegetableListController'
+        })
+        .when('/veg/:vegName', {
+            templateUrl: '/vegetable-detail.html',
+            controller: 'vegetableDetailController'
+        })
+        .otherwise({
+            redirectTo: '/veg'
+        })
+}]);
+
+gardenPlotterApp.controller('buildController', ['$scope', function ($scope) {
     $scope.info = {
         name: 'Garden Plotter',
         version: "2.0.0"
     };
 }]);
-
-app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
-    var placeholderVeg = {name: 'No veg yet!', isPlaceholder: true};
-    $scope.vegetables = [placeholderVeg];
-    $scope.vegetable = {name: 'Tomato'};
-    $scope.sort = 'timeline.added';
-    $scope.addVegetable = function (veg) {
-        if (-1 !== $scope.vegetables.indexOf(placeholderVeg)) {
-            $scope.vegetables.splice($scope.vegetables.indexOf(placeholderVeg), 1);
-        }
-        veg.timeline = {added: new Date().getTime()};
-        $scope.vegetables.push(angular.copy(veg));
-        $scope.vegetable = {};
-    }
-}]);
-
-app.controller('VegetableListController', ['$scope', function ($scope) {
-    $scope.selectVegetable = function (vegetable) {
-        angular.forEach($scope.vegetables, function(veg) {
-            veg.isSelected = (veg === vegetable);
-        });
-    }
-})];

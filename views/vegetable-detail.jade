@@ -1,0 +1,3 @@
+.veg-detail(ng-controller="vegetableDetailController", ng-scope="vegetable")
+    h2 {{vegetable.name}} Details
+    p If planted today, it would be ready to harvest on {{vegetable.lifecycle.daysToHarvest | daysAfterToday | casualTime}}
