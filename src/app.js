@@ -1,10 +1,9 @@
-var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'vegetableControllers', 'gardenPlotterFilters']);
+var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'vegetableControllers', 'plotControllers', 'gardenPlotterFilters']);
 
 gardenPlotterApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/veg', {
-            templateUrl: '/vegetable-list.html',
-            controller: 'vegetableListController'
+            templateUrl: '/welcome.html'
         })
         .when('/veg/:vegName', {
             templateUrl: '/vegetable-detail.html',

@@ -1,10 +1,9 @@
-var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'vegetableControllers', 'gardenPlotterFilters']);
+var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'vegetableControllers', 'plotControllers', 'gardenPlotterFilters']);
 
 gardenPlotterApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/veg', {
-            templateUrl: '/vegetable-list.html',
-            controller: 'vegetableListController'
+            templateUrl: '/welcome.html'
         })
         .when('/veg/:vegName', {
             templateUrl: '/vegetable-detail.html',
@@ -44,14 +43,14 @@ angular.module('gardenPlotterFilters', [])
             ending = 'th';
             if (day < 4 || day > 13) {
                 if (1 === day % 10) {
-                    ending = 'st';                    
+                    ending = 'st';
                 } else if (2 === day % 10) {
                     ending = 'nd';
                 } else if (3 === day % 10) {
                     ending = 'rd';
                 }
             }
-            return months[time.getUTCMonth()] + ' ' + day + ending;
+            return months[time.getUTCMonth()] + ' ' + day + ending;   
         }
     })
     .filter('daysAfterToday', function () {
@@ -66,6 +65,47 @@ angular.module('gardenPlotterFilters', [])
             return today;
         };
     });
+
+var plotControllers = angular.module('plotControllers', []);
+
+plotControllers.controller('plotController', ['$scope', function ($scope) {
+    var plotPlaceholder = {name: 'My Garden Plot', isPlacehoder: true};
+    
+    $scope.plots = [plotPlaceholder];
+    $scope.plot = $scope.plots[0];
+    
+    $scope.plantVegetable = function (veg, plot, date, direct) {
+        if (!veg) {
+            throw new Error('Unable to plant: No vegetable provided!')
+        }
+        plot = plot || $scope.plots[0];
+        date = date || new Date();
+        direct = ('undefined' !== typeof direct) ? direct : true;
+        plot.plants = plot.plants || [];
+        plot.plants.push({
+            vegetable: veg,
+            planned: {
+                sow: direct && date,
+                set: !direct && date
+            },
+            actual: {
+                sow: null,
+                germinate: null,
+                set: null,
+                harvest: null
+            }
+        });
+    };
+}]);
+
+plotControllers.controller('plotListController', ['$scope', function ($scope) {
+
+}]);
+
+plotControllers.controller('plotDetailController', ['$scope', function ($scope) {
+    
+}]);
+
 
 var vegetableControllers = angular.module('vegetableControllers', []);
 
@@ -108,5 +148,8 @@ vegetableControllers.controller('vegetableListController', ['$scope', function (
 }]);
 
 vegetableControllers.controller('vegetableDetailController', ['$scope', '$routeParams', function ($scope, $routeParams) {
-    $scope.vegetable = $scope.findVeg($routeParams.vegName);        
+    $scope.vegetable = $scope.findVeg($routeParams.vegName);
+    $scope.plant = function () {
+        $scope.plantVegetable($scope.vegetable);
+    }
 }]);

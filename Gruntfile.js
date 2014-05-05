@@ -23,7 +23,8 @@ module.exports = function(grunt) {
                     'bower_components/angular-route/angular-route.js'
                 ],
                 specs: 'specs/*-spec.js',
-                helpers: 'specs/*-helper.js'
+                helpers: 'specs/*-helper.js',
+                keepRunner: true
             },
             common: {
                 src: 'src/**/*.js',

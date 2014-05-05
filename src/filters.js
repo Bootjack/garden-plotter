@@ -20,14 +20,14 @@ angular.module('gardenPlotterFilters', [])
             ending = 'th';
             if (day < 4 || day > 13) {
                 if (1 === day % 10) {
-                    ending = 'st';                    
+                    ending = 'st';
                 } else if (2 === day % 10) {
                     ending = 'nd';
                 } else if (3 === day % 10) {
                     ending = 'rd';
                 }
             }
-            return months[time.getUTCMonth()] + ' ' + day + ending;
+            return months[time.getUTCMonth()] + ' ' + day + ending;   
         }
     })
     .filter('daysAfterToday', function () {

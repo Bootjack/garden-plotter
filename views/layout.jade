@@ -3,14 +3,20 @@ html(ng-app="gardenPlotter")
     head
         title Garden Plotter
         link(rel="stylesheet", type="text/css", href="/styles/main.css")
+    
     body
         header(ng-controller="buildController")
             h1 {{info.name}}
             .version version {{info.version}}
-        div(ng-controller="vegetableController")
-            div(ng-include="'vegetable-list.html'")
-            div(ng-view)
-    
+        
+        div(ng-controller="plotController")
+            div(ng-include="'plot-list.html'")
+            div(ng-include="'plot-detail.html'")
+        
+            div(ng-controller="vegetableController")
+                div(ng-include="'vegetable-list.html'")
+                div(ng-view)
+
         script(type="text/javascript", src="/scripts/angular.js")
         script(type="text/javascript", src="/scripts/angular-route.js")
         script(type="text/javascript", src="/scripts/app.js")

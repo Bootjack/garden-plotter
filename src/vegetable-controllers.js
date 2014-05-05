@@ -39,5 +39,8 @@ vegetableControllers.controller('vegetableListController', ['$scope', function (
 }]);
 
 vegetableControllers.controller('vegetableDetailController', ['$scope', '$routeParams', function ($scope, $routeParams) {
-    $scope.vegetable = $scope.findVeg($routeParams.vegName);        
+    $scope.vegetable = $scope.findVeg($routeParams.vegName);
+    $scope.plant = function () {
+        $scope.plantVegetable($scope.vegetable);
+    }
 }]);

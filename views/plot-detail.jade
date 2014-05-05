@@ -1,0 +1,7 @@
+div(ng-controller="plotDetailController")
+    h2 {{plot.name}}
+    ul.plants
+        li.plant(ng-repeat="plant in plot.plants").
+            {{(plant.planned.sow || plant.planned.set) | casualTime }}
+            {{plant.vegetable.name}} ready to harvest
+            {{plant.vegetable.lifecycle.daysToHarvest | daysAfterToday: (plant.planned.sow || plant.planned.set) | casualTime}}
