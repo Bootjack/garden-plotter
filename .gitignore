@@ -1,8 +1,14 @@
+# IDE resources
 .idea
+
+# Build artifacts
+.grunt
 bower_components
 node_modules
-
 npm-debug.log
 
-public/scripts/angular.js
-public/scripts/angular-route.js
+public/scripts
+public/styles
+
+# Jasmine saved test runner
+_SpecRunner.html

@@ -3,7 +3,7 @@
 describe('Vegetable', function () {
     var scope, detailScope, listScope, $httpBackend, $routeParams;
 
-    beforeEach(module('gardenPlotter'));
+    beforeEach(module('gp.vegetableControllers'));
     beforeEach(inject(function ($rootScope, $controller, _$httpBackend_, _$routeParams_) {
         $httpBackend = _$httpBackend_;
         $httpBackend.expectGET('/api/user-veg.json').respond([

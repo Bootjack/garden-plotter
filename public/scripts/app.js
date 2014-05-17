@@ -1,4 +1,4 @@
-var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'vegetableControllers', 'plotControllers', 'gardenPlotterFilters']);
+var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'gp.vegetableControllers', 'gp.plotControllers', 'gp.dateFilters']);
 
 gardenPlotterApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -21,7 +21,7 @@ gardenPlotterApp.controller('buildController', ['$scope', function ($scope) {
     };
 }]);
 
-angular.module('gardenPlotterFilters', [])
+angular.module('gp.dateFilters', [])
     .filter('casualTime', function () {
         var months = [
             'January',
@@ -66,7 +66,7 @@ angular.module('gardenPlotterFilters', [])
         };
     });
 
-var plotControllers = angular.module('plotControllers', []);
+var plotControllers = angular.module('gp.plotControllers', []);
 
 plotControllers.controller('plotController', ['$scope', function ($scope) {
     var plotPlaceholder = {name: 'My Garden Plot', isPlacehoder: true};
@@ -107,7 +107,7 @@ plotControllers.controller('plotDetailController', ['$scope', function ($scope) 
 }]);
 
 
-var vegetableControllers = angular.module('vegetableControllers', []);
+var vegetableControllers = angular.module('gp.vegetableControllers', ['ngRoute']);
 
 vegetableControllers.controller('vegetableController', ['$scope', '$http', function ($scope, $http) {
     var placeholderVeg = {name: 'No veg yet!', isPlaceholder: true};

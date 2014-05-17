@@ -1,5 +1,5 @@
 describe('Filters', function () {
-    beforeEach(module('gardenPlotter'));
+    beforeEach(module('gp.dateFilters'));
     
     describe('Casual time', function () {
         var date = new Date(0);

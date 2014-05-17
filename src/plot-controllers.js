@@ -1,4 +1,4 @@
-var plotControllers = angular.module('plotControllers', []);
+var plotControllers = angular.module('gp.plotControllers', []);
 
 plotControllers.controller('plotController', ['$scope', function ($scope) {
     var plotPlaceholder = {name: 'My Garden Plot', isPlacehoder: true};

@@ -1,4 +1,4 @@
-var vegetableControllers = angular.module('vegetableControllers', []);
+var vegetableControllers = angular.module('gp.vegetableControllers', ['ngRoute']);
 
 vegetableControllers.controller('vegetableController', ['$scope', '$http', function ($scope, $http) {
     var placeholderVeg = {name: 'No veg yet!', isPlaceholder: true};

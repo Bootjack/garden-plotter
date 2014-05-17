@@ -1,4 +1,4 @@
-angular.module('gardenPlotterFilters', [])
+angular.module('gp.dateFilters', [])
     .filter('casualTime', function () {
         var months = [
             'January',

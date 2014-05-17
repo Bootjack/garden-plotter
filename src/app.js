@@ -1,4 +1,4 @@
-var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'vegetableControllers', 'plotControllers', 'gardenPlotterFilters']);
+var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'gp.vegetableControllers', 'gp.plotControllers', 'gp.dateFilters']);
 
 gardenPlotterApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
