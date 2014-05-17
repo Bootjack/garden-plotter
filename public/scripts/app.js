@@ -66,6 +66,52 @@ angular.module('gp.dateFilters', [])
         };
     });
 
+angular.module('gp.services', [])
+    .factory('gp.plantListService', ['$http', function plantListFactory($http) {
+        var currentPlant, placeholderPlant, plants, plantListService;
+
+        placeholderPlant = {name: 'No plants yet!', isPlaceholder: true};
+        currentPlant = placeholderPlant;
+        plants = [];
+        
+        plantListService = {
+            add: function (plant) {
+                if (-1 !== plants.indexOf(placeholderPlant)) {
+                    plants.splice(plants.indexOf(placeholderPlant), 1);
+                }
+                plant.timeline = {added: new Date().getTime()};
+                plants.push(angular.copy(plant));
+            },
+            find: function (name) {
+                var foundPlant, nameRegExp;
+                nameRegExp = new RegExp(name, 'i');
+                angular.forEach(plants, function (plant) {
+                    if (plant.name.match(nameRegExp)) {
+                        foundPlant = plant;
+                    }
+                });
+                return foundPlant;
+            },
+            all: function () {
+                return plants;
+            },
+            currentPlant: function (plant) {
+                if (plant) {
+                    currentPlant = plant;
+                }
+                return currentPlant;
+            }
+        };
+
+        $http.get('/api/user-veg.json').success(function (data) {
+            angular.forEach(data, function (plant) {
+                plantListService.add(plant);
+            });
+        });
+        
+        return plantListService;
+    }]);
+
 var plotControllers = angular.module('gp.plotControllers', []);
 
 plotControllers.controller('plotController', ['$scope', function ($scope) {
@@ -107,39 +153,10 @@ plotControllers.controller('plotDetailController', ['$scope', function ($scope) 
 }]);
 
 
-var vegetableControllers = angular.module('gp.vegetableControllers', ['ngRoute']);
+var vegetableControllers = angular.module('gp.vegetableControllers', ['ngRoute', 'gp.services']);
 
-vegetableControllers.controller('vegetableController', ['$scope', '$http', function ($scope, $http) {
-    var placeholderVeg = {name: 'No veg yet!', isPlaceholder: true};
-    $scope.vegetables = [placeholderVeg];
-    $scope.vegetable = {name: 'Tomato'};
-    $scope.sort = 'timeline.added';
-    $scope.addVegetable = function (veg) {
-        if (-1 !== $scope.vegetables.indexOf(placeholderVeg)) {
-            $scope.vegetables.splice($scope.vegetables.indexOf(placeholderVeg), 1);
-        }
-        veg.timeline = {added: new Date().getTime()};
-        $scope.vegetables.push(angular.copy(veg));
-        $scope.vegetable = {};
-    };
-    $scope.findVeg = function (name) {
-        var foundVeg, nameRegExp;
-        nameRegExp = new RegExp(name, 'i');
-        angular.forEach($scope.vegetables, function (veg) {
-            if (veg.name.match(nameRegExp)) {
-                foundVeg = veg;
-            }
-        });
-        return foundVeg;
-    };
-    $http.get('/api/user-veg.json').success(function (data) {
-        angular.forEach(data, function (veg) {
-            $scope.addVegetable(veg);
-        });
-    });
-}]);
-
-vegetableControllers.controller('vegetableListController', ['$scope', function ($scope) {
+vegetableControllers.controller('vegetableListController', ['$scope', 'gp.plantListService', function ($scope, plantListService) {
+    $scope.vegetables = plantListService.all();
     $scope.selectVegetable = function (vegetable) {
         angular.forEach($scope.vegetables, function(veg) {
             veg.isSelected = (veg === vegetable);
@@ -147,8 +164,8 @@ vegetableControllers.controller('vegetableListController', ['$scope', function (
     }
 }]);
 
-vegetableControllers.controller('vegetableDetailController', ['$scope', '$routeParams', function ($scope, $routeParams) {
-    $scope.vegetable = $scope.findVeg($routeParams.vegName);
+vegetableControllers.controller('vegetableDetailController', ['$scope', '$routeParams', 'gp.plantListService', function ($scope, $routeParams, plantListService) {
+    $scope.vegetable = plantListService.currentPlant(plantListService.find($routeParams.vegName));
     $scope.plant = function () {
         $scope.plantVegetable($scope.vegetable);
     }

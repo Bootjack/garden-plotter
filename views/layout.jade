@@ -13,9 +13,8 @@ html(ng-app="gardenPlotter")
             div(ng-include="'plot-list.html'")
             div(ng-include="'plot-detail.html'")
         
-            div(ng-controller="vegetableController")
-                div(ng-include="'vegetable-list.html'")
-                div(ng-view)
+            div(ng-include="'vegetable-list.html'")
+            div(ng-view)
 
         script(type="text/javascript", src="/scripts/angular.js")
         script(type="text/javascript", src="/scripts/angular-route.js")

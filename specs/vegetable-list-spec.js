@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Vegetable List', function () {
+xdescribe('Vegetable List', function () {
     var scope, listScope;
     
     beforeEach(module('gardenPlotter'));

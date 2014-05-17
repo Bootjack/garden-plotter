@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Vegetable', function () {
+xdescribe('Vegetable', function () {
     var scope, detailScope, listScope, $httpBackend, $routeParams;
 
     beforeEach(module('gp.vegetableControllers'));
