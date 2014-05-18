@@ -1,7 +1,7 @@
-form.creation-form(ng-submit="addVegetable(vegetable)", name="newVegetable", novalidate)
-    label Add Veg
-        input(ng-model="vegetable.name")
 .selection-list(ng-controller="vegetableListController")
+    form.creation-form(ng-submit="add(vegetable)", name="newVegetable", novalidate)
+        label Add Veg
+            input(ng-model="vegetable.name")
     label Search
         input(ng-model="search", placeholder="Tomato")
     label Sort

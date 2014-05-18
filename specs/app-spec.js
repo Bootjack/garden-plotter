@@ -17,11 +17,4 @@ describe('Garden Plotter', function () {
         expect(scope.info.version).toBe('2.0.0');
     });
 
-    describe('vegetables', function () {
-        it('should start with a single placholder', function () {
-            expect(scope.vegetables.length).toBe(1);
-            expect(scope.vegetables[0].isPlaceholder).toBeTruthy();
-        })        
-    });
-
 });

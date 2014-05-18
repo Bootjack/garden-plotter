@@ -1,15 +1,28 @@
 'use strict';
 
-describe('Vegetable List', function () {
-    var scope, $httpBackend;
+xdescribe('Vegetable List', function () {
+    var scope;
     
     beforeEach(module('gp.vegetableControllers'));
-    beforeEach(inject(function (_$httpBackend_, $scope, $controller, plantListService) {
-        $httpBackend = _$httpBackend_;
+    beforeEach(inject(function ($controller, $rootScope) {
+        scope = $rootScope.$new();
+        scope.vegetables = [
+            {name: 'Potato', lifecycle: {
+                daysToGerminate: 12,
+                daysToHarvest: 64,
+                perennial: false
+            }},
+            {name: 'Tomato', lifecycle: {
+                daysToGerminate: 8,
+                daysToHarvest: 50,
+                perennial: false
+            }}
+        ];
+        
         $controller('vegetableListController', {$scope: scope});
     }));
     
-    xit('should allow exactly one vegetable to be selected', function () {
+    it('should allow exactly one vegetable to be selected', function () {
         expect(scope.vegetables.length).toBe(2);
         scope.selectVegetable(scope.vegetables[0]);
         expect(scope.vegetables[0].isSelected).toBeTruthy();

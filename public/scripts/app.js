@@ -161,7 +161,8 @@ vegetableControllers.controller('vegetableListController', ['$scope', 'gp.plantL
         angular.forEach($scope.vegetables, function(veg) {
             veg.isSelected = (veg === vegetable);
         });
-    }
+    };
+    $scope.add = plantListService.add;
 }]);
 
 vegetableControllers.controller('vegetableDetailController', ['$scope', '$routeParams', 'gp.plantListService', function ($scope, $routeParams, plantListService) {
