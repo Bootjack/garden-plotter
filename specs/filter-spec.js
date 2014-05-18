@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Filters', function () {
     beforeEach(module('gp.dateFilters'));
     

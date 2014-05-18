@@ -1,13 +1,13 @@
 'use strict';
 
-xdescribe('Garden Plotter', function () {
+describe('Garden Plotter', function () {
     var scope;
     
     beforeEach(angular.mock.module('gardenPlotter'));
     beforeEach(angular.mock.inject(function ($rootScope, $controller) {
         scope = $rootScope.$new();
         $controller('buildController', {$scope: scope});
-s    }));
+    }));
 
     it('should be called Garden Plotter', function () {
         expect(scope.info.name).toBe('Garden Plotter');

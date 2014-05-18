@@ -1,10 +1,10 @@
 'use strict';
 
-xdescribe('Vegetable', function () {
-    var scope, detailScope, listScope, $httpBackend, $routeParams;
+describe('Plant List Service', function () {
+    var scope, detailScope, listScope, $httpBackend;
 
-    beforeEach(module('gp.vegetableControllers'));
-    beforeEach(inject(function ($rootScope, $controller, _$httpBackend_, _$routeParams_) {
+    beforeEach(module('gp.services'));
+    beforeEach(inject(['$httpBackend', function (_$httpBackend_) {
         $httpBackend = _$httpBackend_;
         $httpBackend.expectGET('/api/user-veg.json').respond([
             {name: 'Potato', lifecycle: {
@@ -18,24 +18,17 @@ xdescribe('Vegetable', function () {
                 perennial: false
             }}
         ]);
-        $routeParams = _$routeParams_;
-        $routeParams.vegName = 'tomato';
-        scope = $rootScope.$new();
-        $controller('vegetableController', {$scope: scope});
-        listScope = scope.$new();
-        $controller('vegetableListController', {$scope: listScope});
-    }));
+    }]));
 
-    it('should find veg by name', function () {
-        var veg;
-        expect(scope.vegetables).toBeDefined();
-        expect(scope.vegetables.length).toBe(1);
+    it('should find veg by name', inject(['gp.plantListService', function (plantListService) {
+        var plant;
+        expect(plantListService.all().length).toBe(0);
         $httpBackend.flush();
-        expect(scope.vegetables.length).toBe(2);
-        veg = scope.findVeg('tomato');
-        expect(veg).toBeDefined();
-        expect(veg.name).toEqual('Tomato');
-    });
+        expect(plantListService.all().length).toBe(2);
+        plant = plantListService.find('tomato');
+        expect(plant).toBeDefined();
+        expect(plant.name).toEqual('Tomato');
+    }]));
     
     describe('Vegetable List', function () {        
         beforeEach(function () {
