@@ -1,0 +1,7 @@
+.dialog-container(ng-controller="dialogController", ng-show="active")
+    .dialog
+        .dialog__heading
+            h2 {{dialog.title}}
+        .dialog__body(ng-include="dialog.template ? dialog.template + '.html' : ''")
+        .dialog__actions
+            button(ng-repeat="action in dialog.actions", ng-click="action.do(); hide();") {{action.name}}

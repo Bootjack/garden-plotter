@@ -9,12 +9,13 @@ html(ng-app="gardenPlotter")
             h1 {{info.name}}
             .version version {{info.version}}
         
-        div(ng-controller="plotController")
-            div(ng-include="'plot-list.html'")
-            div(ng-include="'plot-detail.html'")
-        
-            div(ng-include="'vegetable-list.html'")
-            div(ng-view)
+        .plot-list-template(ng-include="'plot-list.html'")
+        .plot-detail-template(ng-include="'plot-detail.html'")
+    
+        .vegetable-list-template(ng-include="'vegetable-list.html'")
+
+        .dialog-template(ng-include="'dialog.html'")
+
 
         script(type="text/javascript", src="/scripts/angular.js")
         script(type="text/javascript", src="/scripts/angular-route.js")

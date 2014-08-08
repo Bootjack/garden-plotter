@@ -3,7 +3,7 @@
 describe('Plant List Service', function () {
     var scope, detailScope, listScope, $httpBackend;
 
-    beforeEach(module('gp.services'));
+    beforeEach(module('gp.services.plants'));
     beforeEach(inject(['$httpBackend', function (_$httpBackend_) {
         $httpBackend = _$httpBackend_;
         $httpBackend.expectGET('/api/user-veg.json').respond([

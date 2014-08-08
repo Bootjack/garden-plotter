@@ -1,4 +1,10 @@
-var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'gp.vegetableControllers', 'gp.plotControllers', 'gp.dateFilters']);
+var gardenPlotterApp = angular.module('gardenPlotter', [
+    'ngRoute', 
+    'gp.vegetableControllers', 
+    'gp.plotControllers', 
+    'gp.dateFilters', 
+    'gp.services.dialogs'
+]);
 
 gardenPlotterApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -11,7 +17,7 @@ gardenPlotterApp.config(['$routeProvider', function ($routeProvider) {
         })
         .otherwise({
             redirectTo: '/veg'
-        })
+        });
 }]);
 
 gardenPlotterApp.controller('buildController', ['$scope', function ($scope) {

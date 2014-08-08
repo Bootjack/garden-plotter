@@ -1,40 +1,10 @@
-var plotControllers = angular.module('gp.plotControllers', []);
+var plotControllers = angular.module('gp.plotControllers', ['gp.services.gardens']);
 
-plotControllers.controller('plotController', ['$scope', function ($scope) {
-    var plotPlaceholder = {name: 'My Garden Plot', isPlacehoder: true};
-    
-    $scope.plots = [plotPlaceholder];
-    $scope.plot = $scope.plots[0];
-    
-    $scope.plantVegetable = function (veg, plot, date, direct) {
-        if (!veg) {
-            throw new Error('Unable to plant: No vegetable provided!')
-        }
-        plot = plot || $scope.plots[0];
-        date = date || new Date();
-        direct = ('undefined' !== typeof direct) ? direct : true;
-        plot.plants = plot.plants || [];
-        plot.plants.push({
-            vegetable: veg,
-            planned: {
-                sow: direct && date,
-                set: !direct && date
-            },
-            actual: {
-                sow: null,
-                germinate: null,
-                set: null,
-                harvest: null
-            }
-        });
-    };
+plotControllers.controller('plotListController', ['$scope', 'gp.gardenService', function ($scope, gardenService) {
+    $scope.gardens = gardenService.all();
 }]);
 
-plotControllers.controller('plotListController', ['$scope', function ($scope) {
-
-}]);
-
-plotControllers.controller('plotDetailController', ['$scope', function ($scope) {
-    
+plotControllers.controller('plotDetailController', ['$scope', 'gp.gardenService', function ($scope, gardenService) {
+    $scope.garden = gardenService.currentGarden();
 }]);
 

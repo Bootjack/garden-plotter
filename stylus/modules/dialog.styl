@@ -1,0 +1,49 @@
+.dialog-container
+    background-color: page-bg
+    height: 100%
+    left: 0
+    margin: 0
+    padding: 0
+    position: absolute
+    width: 100%
+    top: 0
+
+    .dialog
+        background: white
+        border: 1px solid gray
+        box-shadow: 0 0 8px gray
+        margin: 2em auto
+        padding: 0
+        width: 75%
+        
+        .dialog__heading
+            background-color: text-bold
+            color: white
+            padding: 0.5em 1em
+            h2
+                line-height: 1em
+                margin: 0
+                padding: 0
+        
+        .dialog__body
+            padding: 1em
+            
+        .dialog__actions
+            background-color: whitesmoke
+            border-top: 1px solid lightgray
+            text-align: right
+            button
+                background-color: white
+                border-radius: 5px
+                border-width: 0
+                box-shadow: 0 0 3px lightgray
+                color: gray
+                font-size: 0.8em
+                height: 2.5em
+                padding: 0.5em 1em
+                margin: 0.5em
+                &:last-child
+                    background-color: page-bg
+                    color: text-bold
+                    font-weight: bold
+                    

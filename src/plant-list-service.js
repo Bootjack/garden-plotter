@@ -1,4 +1,4 @@
-angular.module('gp.services', [])
+angular.module('gp.services.plants', [])
     .factory('gp.plantListService', ['$http', function plantListFactory($http) {
         var currentPlant, placeholderPlant, plants, plantListService;
 

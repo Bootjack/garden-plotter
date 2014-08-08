@@ -1,4 +1,10 @@
-var gardenPlotterApp = angular.module('gardenPlotter', ['ngRoute', 'gp.vegetableControllers', 'gp.plotControllers', 'gp.dateFilters']);
+var gardenPlotterApp = angular.module('gardenPlotter', [
+    'ngRoute', 
+    'gp.vegetableControllers', 
+    'gp.plotControllers', 
+    'gp.dateFilters', 
+    'gp.services.dialogs'
+]);
 
 gardenPlotterApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -11,7 +17,7 @@ gardenPlotterApp.config(['$routeProvider', function ($routeProvider) {
         })
         .otherwise({
             redirectTo: '/veg'
-        })
+        });
 }]);
 
 gardenPlotterApp.controller('buildController', ['$scope', function ($scope) {
@@ -66,7 +72,145 @@ angular.module('gp.dateFilters', [])
         };
     });
 
-angular.module('gp.services', [])
+/**
+ * Handles all modal dialog boxes in UI
+ * Allows only one dialog to be active at a time.
+ */
+
+angular.module('gp.services.dialogs', [])
+    .factory('dialogService', [function dialogFactory() {
+        var controllerScope, dialog, DialogService;
+        
+        dialog = {};
+        
+        DialogService = {
+            dialog: function (config) {
+                if (config) {
+                    dialog.title = config.title;
+                    dialog.template = config.template;
+                    dialog.data = config.data;
+                    dialog.actions = config.actions;
+                }
+                
+                if (controllerScope) {
+                    controllerScope.updateDialog(dialog);
+                    this.show();
+                }
+                
+                return dialog;
+            },
+            
+            show: function () {
+                if (controllerScope) {
+                    controllerScope.active = true;
+                }
+                return this;
+            },
+            
+            hide: function () {
+                if (controllerScope) {
+                    controllerScope.active = false;
+                }
+                return this;
+            },
+            
+            wire: function (scope) {
+                controllerScope = scope;
+            }
+        };
+
+        return DialogService;
+    }])
+    .controller('dialogController', ['$scope', 'dialogService', function($scope, dialogService) {
+        dialogService.wire($scope);
+        $scope.updateDialog = function (dialog) {
+            $scope.dialog = dialog;
+            return this;
+        };
+    }]);
+
+angular.module('gp.services.gardens', [])
+    .factory('gp.gardenService', [function gardenFactory () {
+        var currentGarden, gardens, GardenService;
+
+        gardens = [];
+        
+        function Garden(name, config) {
+            var i, _name;
+            i = 1;
+            _name = name.toString();
+            while (GardenService.find(name) && i < 100) {
+                i += 1;
+                name = _name + ' ' + i;
+            }
+            this.name = name;
+            this.plants = [];
+        }
+        
+        Garden.prototype.plant = function (plant, direct) {
+            var planting;
+            if (!plant) {
+                throw new Error('No plant provided!')
+            }
+
+            date = new Date();
+            direct = ('undefined' !== typeof direct) ? !!direct : true;
+
+            planting = {
+                plant: plant,
+                planned: {
+                    sow: direct && date,
+                    set: !direct && date
+                },
+                actual: {
+                    sow: null,
+                    germinate: null,
+                    set: null,
+                    harvest: null
+                }
+            };
+                
+            this.plants.push(planting);
+            return planting;
+        };
+        
+        GardenService = {
+            add: function (name) {
+                gardens.push(new Garden(name));
+            },
+
+            find: function (name) {
+                var foundGarden;
+                angular.forEach(gardens, function (garden) {
+                    if (garden.name === name) {
+                        foundGarden = garden;
+                    }
+                });
+                return foundGarden;
+            },
+            
+            all: function () {
+                return gardens;  
+            },
+
+            currentGarden: function (garden) {
+                if (garden) {
+                    currentGarden = garden;
+                }
+                return currentGarden;
+            }
+        };
+
+        GardenService.add('My Garden');
+        currentGarden = gardens[0];
+        
+        return GardenService;
+    }])
+    .controller('gardenPlantingController', ['gp.gardenService', function (gardenService) {
+        
+    }]);
+
+angular.module('gp.services.plants', [])
     .factory('gp.plantListService', ['$http', function plantListFactory($http) {
         var currentPlant, placeholderPlant, plants, plantListService;
 
@@ -112,62 +256,61 @@ angular.module('gp.services', [])
         return plantListService;
     }]);
 
-var plotControllers = angular.module('gp.plotControllers', []);
+var plotControllers = angular.module('gp.plotControllers', ['gp.services.gardens']);
 
-plotControllers.controller('plotController', ['$scope', function ($scope) {
-    var plotPlaceholder = {name: 'My Garden Plot', isPlacehoder: true};
-    
-    $scope.plots = [plotPlaceholder];
-    $scope.plot = $scope.plots[0];
-    
-    $scope.plantVegetable = function (veg, plot, date, direct) {
-        if (!veg) {
-            throw new Error('Unable to plant: No vegetable provided!')
+plotControllers.controller('plotListController', ['$scope', 'gp.gardenService', function ($scope, gardenService) {
+    $scope.gardens = gardenService.all();
+}]);
+
+plotControllers.controller('plotDetailController', ['$scope', 'gp.gardenService', function ($scope, gardenService) {
+    $scope.garden = gardenService.currentGarden();
+}]);
+
+
+var vegetableControllers = angular.module('gp.vegetableControllers', ['ngRoute', 'gp.services.plants', 'gp.services.gardens', 'gp.services.dialogs']);
+
+vegetableControllers.controller('vegetableListController', [
+    '$scope', 'gp.plantListService', 'gp.gardenService', 'dialogService',
+    function ($scope, plantListService, gardenService, dialogService) {
+        $scope.vegetables = plantListService.all();
+        $scope.selectVegetable = function (vegetable) {
+            $scope.current = vegetable;
+            angular.forEach($scope.vegetables, function(veg) {
+                veg.isSelected = (veg === vegetable);
+            });
+        };
+        $scope.plant = function (plant) {
+            var garden = gardenService.currentGarden();
+            dialogService.dialog({
+                title: 'Plant it Now!',
+                template: 'dialog-plant',
+                data: {plant: plant, date: new Date()},
+                actions: [
+                    { 
+                        name: 'Cancel',
+                        do: function () {
+                            dialogService.hide();
+                        }
+                    },
+                    {
+                        name: 'Plant!',
+                        do: function () {
+                            garden.plant(plant);
+                            dialogService.hide();
+                        }
+                    }
+                ]
+            });
+        };
+        $scope.add = function () {
+            plantListService.add(params);
         }
-        plot = plot || $scope.plots[0];
-        date = date || new Date();
-        direct = ('undefined' !== typeof direct) ? direct : true;
-        plot.plants = plot.plants || [];
-        plot.plants.push({
-            vegetable: veg,
-            planned: {
-                sow: direct && date,
-                set: !direct && date
-            },
-            actual: {
-                sow: null,
-                germinate: null,
-                set: null,
-                harvest: null
-            }
-        });
-    };
-}]);
-
-plotControllers.controller('plotListController', ['$scope', function ($scope) {
-
-}]);
-
-plotControllers.controller('plotDetailController', ['$scope', function ($scope) {
-    
-}]);
-
-
-var vegetableControllers = angular.module('gp.vegetableControllers', ['ngRoute', 'gp.services']);
-
-vegetableControllers.controller('vegetableListController', ['$scope', 'gp.plantListService', function ($scope, plantListService) {
-    $scope.vegetables = plantListService.all();
-    $scope.selectVegetable = function (vegetable) {
-        angular.forEach($scope.vegetables, function(veg) {
-            veg.isSelected = (veg === vegetable);
-        });
-    };
-    $scope.add = plantListService.add;
-}]);
-
-vegetableControllers.controller('vegetableDetailController', ['$scope', '$routeParams', 'gp.plantListService', function ($scope, $routeParams, plantListService) {
-    $scope.vegetable = plantListService.currentPlant(plantListService.find($routeParams.vegName));
-    $scope.plant = function () {
-        $scope.plantVegetable($scope.vegetable);
     }
-}]);
+]);
+
+vegetableControllers.controller('vegetableDetailController', [
+    '$scope', '$routeParams', 'gp.plantListService', 'gp.gardenService', 
+    function ($scope, $routeParams, plantListService) {
+        $scope.vegetable = plantListService.currentPlant(plantListService.find($routeParams.vegName));
+    }
+]);

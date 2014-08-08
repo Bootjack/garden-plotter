@@ -1,7 +1,10 @@
 .selection-list(ng-controller="vegetableListController")
-    form.creation-form(ng-submit="add(vegetable)", name="newVegetable", novalidate)
-        label Add Veg
-            input(ng-model="vegetable.name")
+
+    .current-selection(ng-show="current")
+        h2 {{current.name}}
+        p {{current.lifecycle.daysToHarvest}} days to harvest
+        button(ng-click="plant(current)") Plant Now!
+
     label Search
         input(ng-model="search", placeholder="Tomato")
     label Sort
@@ -14,4 +17,4 @@
             ng-click="selectVegetable(veg)",
             ng-class="{'is-selected': veg.isSelected && !veg.isPlaceholder}"
         )
-            a(href="#/veg/{{veg.name.toLowerCase()}}") {{veg.name}}
+            span {{veg.name}}
